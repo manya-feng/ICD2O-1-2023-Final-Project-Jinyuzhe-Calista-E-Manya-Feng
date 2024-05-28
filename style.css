@@ -1,0 +1,41 @@
+/* Created by: Calista.E
+* Created on: May 2024
+* This file contains the CSS for index.html
+*/
+
+.mdl-layout__header-row {
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .mdl-layout__content {
+    padding-left: 15pt;
+    padding-right: 15pt;
+    padding-top: 15pt;
+  }
+  
+  .mdl-textfield__error {
+    color: rgb(127, 161, 40);
+  }
+  
+  .page-content {
+    color: rgb(190, 138, 138);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.25rem;
+  }
+  
+  .page-content-answer {
+    color: rgb(79, 223, 163);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.25rem;
+  }
+  
+  img {
+    height: auto;
+    width: 250px;
+    float: right;
+  }
+  
+  body {
+    background-color: rgb(218, 77, 145);
+  }

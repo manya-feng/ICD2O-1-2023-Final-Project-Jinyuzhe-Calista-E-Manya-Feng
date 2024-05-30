@@ -1,9 +1,9 @@
 /* global Phaser */
 
-// Copyright (c) 2024 Calista.E ALL Rights reserved
+// Copyright (c) 2024 Calista.E,Manya ALL Rights reserved
 //
 // Created by: Calista.E,Manya
-// Created on: Apr 2024
+// Created on: May 2024
 // This is the Phaser3 game configuration file
 
 // scene import statements

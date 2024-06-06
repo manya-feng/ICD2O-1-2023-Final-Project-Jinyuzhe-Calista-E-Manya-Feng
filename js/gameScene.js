@@ -1,6 +1,6 @@
 /* global Phaser */
 
-// Copyright (c) 2024 Calista.E ALL Rights reserved
+// Copyright (c) 2024 Calista.E and Manya ALL Rights reserved
 //
 // Created by: Calista.E and Manya
 // Created on: May 2024
@@ -11,23 +11,23 @@
  */
 class GameScene extends Phaser.Scene {
 
-    // create an alien
-    createAlien () {
-      const alienXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
-      let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50:
-      alienXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
-      const anAlien = this.physics.add.sprite(alienXLocation, -100, "alien")
-      anAlien.body.velocity.y = 200
-      anAlien.body.velocity.x = alienXVelocity
-      this.alienGroup.add(anAlien)
+    // create a fruit
+    createFruit () {
+      const fruitXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
+      let fruitXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50:
+      fruitXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
+      const aFruit = this.physics.add.sprite(fruitXLocation, -100, "fruit")
+      aFruit.body.velocity.y = 200
+      aFruit.body.velocity.x = fruitXVelocity
+      this.fruitGroup.add(aFruit)
     }
   
     constructor() {
       super({ key: "gameScene" })
 
       this.background = null
-      this.ship = null
-      this.fireMissile = false
+      this.girl = null
+      this.plate = false
       this.score = 0
       this.scoreText = null
       this.scoreTextStyle = { font: "65px Arial", fill: "#ffffff", align:"center"}
@@ -52,8 +52,8 @@ class GameScene extends Phaser.Scene {
       console.log("Game Scene")
   
       // images
-      this.load.image("fruitsBackground", "./assets/gameS  ceneBackground.png")
-      this.load.image("littleGirl", "./assets/littleGirl.png")
+      this.load.image("fruitsBackground", "./assets/gameSceneBackground.png")
+      this.load.image("girl", "./assets/girl.png")
       this.load.image("grape", "assets/grape.png")
       this.load.image("apple", "assets/apple.png")
       this.load.image("mango", "assets/mango.png")
@@ -61,9 +61,9 @@ class GameScene extends Phaser.Scene {
       this.load.image("watermelon", "assets/watermelon.png")
 
       // sound
-      this.load.audio("laser", "assets/bomb.wav")
-      this.load.audio("explosion", "assets/game over.wav")
-      this.load.audio("bomb", "assets/get friuts.wav")
+      this.load.audio("bomb", "assets/bomb.wav")
+      this.load.audio("gameOver", "assets/game over.wav")
+      this.load.audio("getFruits", "assets/get friuts.wav")
     }
   
     /**
@@ -77,29 +77,29 @@ class GameScene extends Phaser.Scene {
   
       this.scoreText = this.add.text(10, 10, "Score: " + this.score.toString(), this.scoreTextStyle)
   
-      this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, "ship")
+      this.girl = this.physics.add.sprite(1920 / 2, 1080 - 100, "girl")
   
-      // create a group for the aliens
-      this.alienGroup = this.add.group()
-      this.createAlien()
+      // create a group for the fruits
+      this.fruitsGroup = this.add.group()
+      this.createFruits()
   
-      // Collisions between missiles and aliens
-      this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
-        alienCollide.destroy()
-        missileCollide.destroy()
-        this.sound.play("explosion")
+      // Collisions between plate and fruits
+      this.physics.add.collider(this.plateGroup, this.fruitsGroup, function (plateCollide, fruitsCollide) {
+        fruitsCollide.destroy()
+        plateCollide.destroy()
+        this.sound.play("get fruits")
         this.score = this.score + 1
         this.scoreText.setText("Score: " + this.score.toString())
-        this.createAlien()
-        this.createAlien()
+        this.createFruits()
+        this.createFruits()
       }.bind(this))
   
-      // Collisions between ship and aliens
-      this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
+      // Collisions between girl and bomb
+      this.physics.add.collider(this.girl, this.bombGroup, function (girlCollide, bombCollide) {
         this.sound.play("bomb")
         this.physics.pause()
-        alienCollide.destroy()
-        shipCollide.destroy()
+        bombCollide.destroy()
+        girlCollide.destroy()
         this.gameOverText = this.add.text(1920 / 2, 1080 / 2, "Game Over!\nClick to play again.", this.gameOverTextStyle).setOrigin(0.5)
         this.gameOverText.setInteractive({ useHandCursor: true })
         this.score = 0
@@ -121,34 +121,34 @@ class GameScene extends Phaser.Scene {
       const keySpaceObj = this.input.keyboard.addKey("SPACE")
   
       if (keyLeftObj.isDown === true) {
-        this.ship.x -= 15
-        if (this.ship.x < 0) {
-          this.ship.x = 0
+        this.girl.x -= 15
+        if (this.girl.x < 0) {
+          this.girl.x = 0
         }
       }
   
       if (keyRightObj.isDown === true) {
-        this.ship.x = this.ship.x + 15
-        if (this.ship.x > 1920) {
-          this.ship.x = 1920
+        this.girl.x = this.girl.x + 15
+        if (this.girl.x > 1920) {
+          this.girl.x = 1920
         }
       }
   
       if (keySpaceObj.isDown === true) {
-        if (this.fireMissile === false) {
-          // fire missile
-          this.fireMissile = true
-          const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, "missile")
-          this.missileGroup.add(aNewMissile)
+        if (this.plate === false) {
+          // plate
+          this.plate = true
+          const aNewPlate = this.physics.add.sprite(this.girl.x, this.girl.y, "plate")
+          this.plateGroup.add(aNewPlate)
           this.sound.play("laser")
         }
       }
   
       if (keySpaceObj.isUp === true) {
-        this.fireMissile = false
+        this.plate = false
       }
   
-      this.missileGroup.children.each(function (item) {
+      this.plateGroup.children.each(function (item) {
         item.y = item.y - 15
         if (item.y < 0) {
           item.destroy()

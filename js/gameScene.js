@@ -54,6 +54,8 @@ class GameScene extends Phaser.Scene {
       // images
       this.load.image("fruitsBackground", "./assets/gameSceneBackground.png")
       this.load.image("girl", "./assets/girl.png")
+      this.load.image("plate", "assets/plate.png")
+      this.load.image("alien", "assets/alien.png")
       this.load.image("grape", "assets/grape.png")
       this.load.image("apple", "assets/apple.png")
       this.load.image("mango", "assets/mango.png")
@@ -78,7 +80,10 @@ class GameScene extends Phaser.Scene {
       this.scoreText = this.add.text(10, 10, "Score: " + this.score.toString(), this.scoreTextStyle)
   
       this.girl = this.physics.add.sprite(1920 / 2, 1080 - 100, "girl")
-  
+
+      // create a group for the plate
+      this.plateGroup = this.physics.add.group()
+
       // create a group for the fruits
       this.fruitsGroup = this.add.group()
       this.createFruits()
@@ -135,9 +140,9 @@ class GameScene extends Phaser.Scene {
       }
   
       if (keySpaceObj.isDown === true) {
-        if (this.plate === false) {
+        if (this.bigPlate === false) {
           // plate
-          this.plate = true
+          this.bigPlate = true
           const aNewPlate = this.physics.add.sprite(this.girl.x, this.girl.y, "plate")
           this.plateGroup.add(aNewPlate)
           this.sound.play("laser")
@@ -145,7 +150,7 @@ class GameScene extends Phaser.Scene {
       }
   
       if (keySpaceObj.isUp === true) {
-        this.plate = false
+        this.bigPlate = false
       }
   
       this.plateGroup.children.each(function (item) {

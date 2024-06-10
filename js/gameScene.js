@@ -52,7 +52,7 @@ class GameScene extends Phaser.Scene {
       console.log("Game Scene")
   
       // images
-      this.load.image("fruitsBackground", "./assets/gameSceneBackground.png")
+      this.load.image("fruitBackground", "./assets/gameSceneBackground.png")
       this.load.image("girl", "./assets/girl.png")
       this.load.image("plate", "assets/plate.png")
       this.load.image("grape", "assets/grape.png")
@@ -64,7 +64,8 @@ class GameScene extends Phaser.Scene {
       // sound
       this.load.audio("bomb", "assets/bomb.wav")
       this.load.audio("gameOver", "assets/game over.wav")
-      this.load.audio("getFruits", "assets/get fruits.wav")
+      this.load.audio("getFruit", "assets/get fruits.wav")
+      this.load.audio("laser", "assets/laser.wav")
     }
   
     /**
@@ -73,7 +74,7 @@ class GameScene extends Phaser.Scene {
      * @param {object} data - Any data passed via ScenePlugin.add() or ScenePlugin.start().
      */
     create(data) {
-      this.background = this.add.image(0, 0, "fruitsBackground").setScale(4.0)
+      this.background = this.add.image(0, 0, "fruitBackground").setScale(4.0)
       this.background.setOrigin(0, 0)
   
       this.scoreText = this.add.text(10, 10, "Score: " + this.score.toString(), this.scoreTextStyle)
@@ -83,19 +84,19 @@ class GameScene extends Phaser.Scene {
       // create a group for the plate
       this.plateGroup = this.physics.add.group()
 
-      // create a group for the fruits
-      this.fruitsGroup = this.add.group()
-      this.createFruits()
+      // create a group for the fruit
+      this.fruitGroup = this.add.group()
+      this.createFruit()
   
-      // Collisions between plate and fruits
-      this.physics.add.collider(this.plateGroup, this.fruitsGroup, function (plateCollide, fruitsCollide) {
-        fruitsCollide.destroy()
+      // Collisions between plate and fruit
+      this.physics.add.collider(this.plateGroup, this.fruitGroup, function (plateCollide, fruitCollide) {
+        fruitCollide.destroy()
         plateCollide.destroy()
-        this.sound.play("get fruits")
+        this.sound.play("getFruit")
         this.score = this.score + 1
         this.scoreText.setText("Score: " + this.score.toString())
-        this.createFruits()
-        this.createFruits()
+        this.createFruit()
+        this.createFruit()
       }.bind(this))
   
       // Collisions between girl and bomb

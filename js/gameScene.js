@@ -55,7 +55,6 @@ class GameScene extends Phaser.Scene {
       this.load.image("fruitsBackground", "./assets/gameSceneBackground.png")
       this.load.image("girl", "./assets/girl.png")
       this.load.image("plate", "assets/plate.png")
-      this.load.image("alien", "assets/alien.png")
       this.load.image("grape", "assets/grape.png")
       this.load.image("apple", "assets/apple.png")
       this.load.image("mango", "assets/mango.png")
@@ -65,7 +64,7 @@ class GameScene extends Phaser.Scene {
       // sound
       this.load.audio("bomb", "assets/bomb.wav")
       this.load.audio("gameOver", "assets/game over.wav")
-      this.load.audio("getFruits", "assets/get friuts.wav")
+      this.load.audio("getFruits", "assets/get fruits.wav")
     }
   
     /**

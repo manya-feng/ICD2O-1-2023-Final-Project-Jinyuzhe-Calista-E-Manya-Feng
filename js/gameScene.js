@@ -26,7 +26,22 @@ class GameScene extends Phaser.Scene {
       this.fruitGroup.add(aFruit)
     }
   
-    constructor() {
+    // create a bomb
+    createBomb () {
+      const bombXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
+      let bombXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50:
+      bombXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
+      const aBomb = this.physics.add.sprite(bombXLocation, -100, "bomb")
+      // Set the scale of the bomb
+      const scale = 0.25
+      // Adjust this value to scale the bomb size
+      aBomb.setScale(scale)      
+      aBomb.body.velocity.y = 200
+      aBomb.body.velocity.x = bombXVelocity
+      this.bombGroup.add(aBomb)
+    }
+
+    constructor() { 
       super({ key: "gameScene" })
 
       this.background = null
@@ -58,7 +73,8 @@ class GameScene extends Phaser.Scene {
       // images
       this.load.image("fruitBackground", "./assets/gameSceneBackground.png")
       this.load.image("girl", "./assets/girl.png")
-      this.load.image("plate", "assets/plate.png")
+      this.load.image("bomb", "assets/bomb.png")
+      this.load.image("basket", "assets/basket.png")
       this.load.image("grape", "assets/grape.png")
       this.load.image("apple", "assets/apple.png")
       this.load.image("fruit", "assets/fruit.png")
@@ -85,17 +101,21 @@ class GameScene extends Phaser.Scene {
   
       this.girl = this.physics.add.sprite(1920 / 2, 1080 - 100, "girl")
 
-      // create a group for the plate
-      this.plateGroup = this.physics.add.group()
+      // create a group for the basket
+      this.basketGroup = this.physics.add.group()
 
       // create a group for the fruit
       this.fruitGroup = this.add.group()
       this.createFruit()
   
-      // Collisions between plate and fruit
-      this.physics.add.collider(this.plateGroup, this.fruitGroup, function (plateCollide, fruitCollide) {
+      // create a group for the bomb
+      this.bombGroup = this.add.group()
+      this.createBomb()
+
+      // Collisions between basket and fruit
+      this.physics.add.collider(this.basketGroup, this.fruitGroup, function (basketCollide, fruitCollide) {
         fruitCollide.destroy()
-        plateCollide.destroy()
+        basketCollide.destroy()
         this.sound.play("getFruit")
         this.score = this.score + 1
         this.scoreText.setText("Score: " + this.score.toString())
@@ -144,20 +164,20 @@ class GameScene extends Phaser.Scene {
       }
   
       if (keySpaceObj.isDown === true) {
-        if (this.bigPlate === false) {
-          // plate
-          this.bigPlate = true
-          const aNewPlate = this.physics.add.sprite(this.girl.x, this.girl.y, "plate")
-          this.plateGroup.add(aNewPlate)
+        if (this.bigBasket === false) {
+          // basket
+          this.bigBasket = true
+          const aNewBasket = this.physics.add.sprite(this.girl.x, this.girl.y, "basket")
+          this.basketGroup.add(aNewBasket)
           this.sound.play("laser")
         }
       }
   
       if (keySpaceObj.isUp === true) {
-        this.bigPlate = false
+        this.bigBasket = false
       }
   
-      this.plateGroup.children.each(function (item) {
+      this.basketGroup.children.each(function (item) {
         item.y = item.y - 15
         if (item.y < 0) {
           item.destroy()

@@ -13,14 +13,26 @@ class GameScene extends Phaser.Scene {
 
     // create a fruit
     createFruit () {
+      let aFruit = null
       const fruitXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
       let fruitXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50:
       fruitXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
-      const aFruit = this.physics.add.sprite(fruitXLocation, -100, "fruit")
-      // Set the scale of the fruit
-      const scale = 0.5
-      // Adjust this value to scale the fruit size
-      aFruit.setScale(scale)      
+
+      // generate a random number
+      let fruitNumber = Math.floor(Math.random() *4) + 1 // this will get a number between 1 and 4:
+      if (fruitNumber == 1) {
+        aFruit = this.physics.add.sprite(fruitXLocation, -100, "grape")
+        aFruit.setScale(0.35)
+      } else if (fruitNumber == 2) {
+        aFruit = this.physics.add.sprite(fruitXLocation, -100, "strawberry")
+        aFruit.setScale(0.35)
+      } else if (fruitNumber == 3) {
+        aFruit = this.physics.add.sprite(fruitXLocation, -100, "watermelon")
+        aFruit.setScale(0.08)
+      } else if (fruitNumber == 4) {
+        aFruit = this.physics.add.sprite(fruitXLocation, -100, "fruit")
+        aFruit.setScale(0.5)
+      }
       aFruit.body.velocity.y = 200
       aFruit.body.velocity.x = fruitXVelocity
       this.fruitGroup.add(aFruit)
@@ -76,7 +88,6 @@ class GameScene extends Phaser.Scene {
       this.load.image("bomb", "assets/bomb.png")
       this.load.image("basket", "assets/basket.png")
       this.load.image("grape", "assets/grape.png")
-      this.load.image("apple", "assets/apple.png")
       this.load.image("fruit", "assets/fruit.png")
       this.load.image("strawberry", "assets/strawberry.png")
       this.load.image("watermelon", "assets/watermelon.png")
@@ -183,6 +194,12 @@ class GameScene extends Phaser.Scene {
           item.destroy()
         }
       })
+
+      // randomly create another bomb
+      const randomBombNumber = Math.floor(Math.random() * 120) + 1
+      if (randomBombNumber == 1) {
+        this.createBomb()
+      }
     }
   }
   
